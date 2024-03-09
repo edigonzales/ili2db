@@ -237,7 +237,7 @@ Es werden keine Daten importiert, sondern nur die leeren Tabellen angelegt.
 
 In den folgenden Abschnitten werden einzelne Aspekte detailliert, aber isoliert, beschrieben. Die Funktionsweise als Ganzes wird anhand einzelner Anwendungsfälle beispielhaft in @sec-funktionsweise (weiter oben) beschrieben.
 
-Die Dokumentation gilt grundsätzlich für alle ili2xy Varianten, ausser es gibt einen spezifischen Hinweis auf PostGIS, GeoPackage oder FileGDB.
+Die Dokumentation gilt grundsätzlich für alle ili2db-Varianten, ausser es gibt einen spezifischen Hinweis auf PostGIS, GeoPackage oder FileGDB.
 
 
 [^1]: GML 3.2; die verwendeten Kodierungsregeln entsprechen [eCH-0118-1.0](https://ech.ch/de/ech/ech-0118/1.0)
