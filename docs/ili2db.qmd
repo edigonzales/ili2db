@@ -61,7 +61,7 @@ Der Import (`--import`) schreibt alle Objekte (im Sinne der eigentlichen Daten) 
 Diverse Optionen beeinflussen, was mit den bestehenden Daten in der DB
 geschieht.
 
-Area- und Surface-Geometrien werden bei Interlis 1 polygoniert.
+AREA- und SURFACE-Geometrien werden bei INTERLIS 1 polygoniert.
 
 Kreisbögen werden als Kreisbögen importiert und somit nicht segmentiert
 (oder können optional auch segmentiert werden).
