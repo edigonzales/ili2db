@@ -29,7 +29,7 @@ format:
 
 
 
-## Überblick
+# Überblick
 
 _ilid2db_ ist eine in Java erstellte Programmfamilie, die zurzeit _ili2pg_,
 _ili2fgdb_, _ili2gpkg_, _ili2ora_, _ili2mssql_, _ili2mysql_ und _ili2h2gis_ umfasst.
@@ -46,7 +46,7 @@ Folgende Transferformate werden unterstützt:
 -   INTERLIS 2
 -   GML 3.2[^1]
 
-### Schemaimport in die Datenbank
+## Schemaimport in die Datenbank
 
 Beim Schemaimport (`--schemaimport`) wird anhand des INTERLIS-Modells das Datenbankschema angelegt.
 
@@ -60,7 +60,7 @@ Beispiel:
 java -jar ili2gpkg.jar --schemaimport --dbfile mogis.gpkg path/to/dm01av.ili
 ```   
 
-### Import in die Datenbank
+## Import in die Datenbank
 
 Der Import (`--import`) schreibt alle Objekte (im Sinne der eigentlichen Daten) der Transferdatei in die Datenbank.
 
@@ -78,7 +78,7 @@ Beispiel:
 java -jar ili2gpkg.jar --import --dbfile mogis.gpkg path/to/data.xtf
 ``` 
 
-### Export aus der Datenbank
+## Export aus der Datenbank
 
 Der Export (`--export`) schreibt alle Daten aus der Datenbank in eine
 Transferdatei.
@@ -97,7 +97,7 @@ Beispiel:
 java -jar ili2gpkg.jar --export --models DM01 --dbfile mogis.gpkg path/to/output.xtf
 ```
 
-### Log-Meldungen
+## Log-Meldungen
 
 Die Log-Meldungen sollen dem Benutzer zeigen, was das Programm macht. Am Anfang erscheinen Angaben zur Programm-Version. Falls das Programm ohne Fehler durchläuft, wird das am Ende ausgegeben.:
 
@@ -121,7 +121,7 @@ Error: DM01.Bodenbedeckung.BoFlaeche_Geometrie: intersection tids 48, 48
 Error: ...import failed
 ```
 
-### Fehlerhafte Daten
+## Fehlerhafte Daten
 
 Um fehlerhaften Daten zu importieren (um sie danach (z.B. im GIS) zu flicken), muss mindestens die Validierung ausgeschaltet werden (`--disableValidation`). Das DB-Schema muss aber auch so angelegt werden, dass fehlerhafte Werte als Text importiert werden können (`--sqlColsAsText`) bzw. durch `NULL` ersetzt werden können (`--sqlEnableNull`). Und die Programmlogik für den Datenimport muss die Fehler tolerieren (`--skipReferenceErrors` und `--skipGeometryErrors`), so dass z.B. eine Referenz auf ein nicht vorhandenes Objekt ignoriert wird.
 
@@ -167,43 +167,43 @@ java -jar ili2gpkg.jar --import --skipReferenceErrors --skipPolygonBuilding \
 --skipGeometryErrors --disableValidation --dbfile mogis.gpkg path/to/data.xtf
 ```
 
-### Laufzeitanforderungen
+## Laufzeitanforderungen
 
 Das Programm setzt Java 1.8 voraus.
 
 ::: {.panel-tabset}
-## PostGIS
+### PostGIS
 
 Als Datenbank muss mindestens PostgreSQL 8.3 und PostGIS 1.5 vorhanden sein. Falls das INTERLIS-Datenmodell INTERLIS.UUIDOID als OID verwendet, wird die Funktion _uuid_generate_v4()_ verwendet. Dazu muss die PostgreSQL-Erweiterung _uuid-ossp_ konfiguriert sein (`CREATE EXTENSION "uuid-ossp";`). Mit der Option `--setupPgExt` erstellt _ili2pg_ die fehlenden notwendigen Erweiterungen.
 
-## FileGDB 
+### FileGDB 
 
 Es muss [Visual Studio 2015 C and C++ Runtimes](https://www.microsoft.com/en-us/download/details.aspx?id=48145) installiert sein. Je nach Java Version (Die Java Version ist massgebend, nicht die Windows Version) muss die 32-bit oder 64-bit Version dieser Laufzeitbibliothek installiert sein. Falls diese Laufzeitbibliothek nicht installiert ist, gibt es einen Fehler beim laden der FileGDB.dll. Zur Laufzeit entpackt _ili2fgdb_ zwei DLLs/Shared-Libraries und lädt diese. Der Benutzer benötigt also die Berechtigungen, um diese Bibliotheken zu laden.
 
-## GeoPackage
+### GeoPackage
 
 Zur Laufzeit entpackt ili2gpkg eine DLL/Shared-Library und lädt diese. Der Benutzer benötigt also die Berechtigungen, um die Bibliothek zu laden.
 
 :::
 
-### Lizenz
+## Lizenz
 
 GNU Lesser General Public License
 
-## Funktionsweise {#sec-funktionsweise}
+# Funktionsweise {#sec-funktionsweise}
 
 In den folgenden Abschnitten wird die Funktionsweise anhand einzelner
 Anwendungsfälle beispielhaft beschrieben. Die detaillierte Beschreibung
 einzelner Funktionen ist in @sec-referenz zu finden.
 
-### Schemaimport-Funktionen
+## Schemaimport-Funktionen
 
-#### Fall 1.1
+### Fall 1.1
 
 Die Tabellen existieren nicht und sollen in der Datenbank angelegt werden (`--schemaimport`).
 
 ::: {.panel-tabset}
-## PostGIS
+#### PostGIS
 
 ```bash
 java -jar ili2pg.jar --schemaimport --dbdatabase mogis --dbusr julia \
@@ -216,7 +216,7 @@ Die leeren Tabellen werden im Default-Schema des Benutzers `julia` angelegt. Die
 Als Host wird der lokale Rechner angenommen und für die Verbindung zur
 Datenbank der Standard-Port.
 
-## GeoPackage
+#### GeoPackage
 
 ```bash
 java -jar ili2gpkg.jar --schemaimport --dbfile mogis.gpkg path/to/dm01.ili
@@ -226,7 +226,7 @@ Die Geometrie-Spalten werden in den Tabellen `gpkg_contents` und `gpkg_geometry_
 
 Falls die Datei mogis.gpkg noch nicht existiert, wird sie erzeugt und mit den für GeoPackage nötigen Metatabellen initialisiert. Falls die Datei schon existiert, werden die Tabellen ergänzt.
 
-## FileGDB
+#### FileGDB
 
 ```bash
 java -jar ili2fgdb.jar --schemaimport --dbfile mogis.gdb path/to/dm01.ili
@@ -238,41 +238,41 @@ Falls die Datei mogis.gdb noch nicht existiert, wird sie erzeugt. Falls die Date
 
 Es werden keine Daten importiert, sondern nur die leeren Tabellen angelegt.
 
-### Export-Funktionen
+## Export-Funktionen
 
 lorem ipsum
 
-### Prüf-Funktionen
+## Prüf-Funktionen
 
 lorem ipsum
 
-### Migration von 3.x nach 4.x
+## Migration von 3.x nach 4.x
 
 lorem ipsum
 
 
-## Referenz {#sec-referenz}
+# Referenz {#sec-referenz}
 
 In den folgenden Abschnitten werden einzelne Aspekte detailliert, aber isoliert, beschrieben. Die Funktionsweise als Ganzes wird anhand einzelner Anwendungsfälle beispielhaft in @sec-funktionsweise (weiter oben) beschrieben.
 
 Die Dokumentation gilt grundsätzlich für alle ili2db-Varianten, ausser es gibt einen spezifischen Hinweis auf PostGIS, GeoPackage oder FileGDB.
 
-### Aufruf-Syntax
+## Aufruf-Syntax
 
 ::: {.panel-tabset}
-## PostGIS
+### PostGIS
 
 ```bash
 java -jar ili2pg.jar [Options] [file]
 ```
 
-## GeoPackage
+### GeoPackage
 
 ```bash
 java -jar ili2fgdb.jar [Options] [file]
 ```
 
-## FileGDB
+### FileGDB
 
 ```bash
 java -jar ili2fgdb.jar [Options] [file]
@@ -308,9 +308,9 @@ Optionen:
 
 : Optionen {tbl-colwidths="[25,75]"}
 
-### Optionen
+## Optionen
 
-#### `--import`
+### `--import`
 
 Importiert Daten aus einer Transferdatei in die Datenbank.
 
@@ -320,7 +320,7 @@ Falls beim Import ein Datensatz-Identifikator (--dataset) definiert wird, darf d
 
 TODO: Die Tabellen sind schon vorhanden (und entsprechen (nicht) der ili-Klasse).
 
-#### `--update`
+### `--update`
 
 Aktualisiert die Daten in der Datenbank anhand einer Transferdatei, d.h. neue Objekte werden eingefügt, bestehende Objekte werden aktualisiert und in der Transferdatei nicht mehr vorhandene Objekte werden gelöscht. Diese Funktion bedingt, dass das Datenbankschema mit der Option `--createBasketCol` erstellt wurde, und dass die Klassen und Topics eine stabile OID haben.
 
