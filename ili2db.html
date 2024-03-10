@@ -79,9 +79,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Inhaltsverzeichnis</h2>
    
   <ul class="collapse">
-  <li><a href="#überblick" id="toc-überblick" class="nav-link active" data-scroll-target="#überblick"><span class="header-section-number">1</span> Überblick</a></li>
-  <li><a href="#sec-funktionsweise" id="toc-sec-funktionsweise" class="nav-link" data-scroll-target="#sec-funktionsweise"><span class="header-section-number">2</span> Funktionsweise</a></li>
-  <li><a href="#sec-referenz" id="toc-sec-referenz" class="nav-link" data-scroll-target="#sec-referenz"><span class="header-section-number">3</span> Referenz</a></li>
+  <li><a href="#überblick" id="toc-überblick" class="nav-link active" data-scroll-target="#überblick"><span class="header-section-number">1</span> Überblick</a>
+  <ul class="collapse">
+  <li><a href="#schemaimport-in-die-datenbank" id="toc-schemaimport-in-die-datenbank" class="nav-link" data-scroll-target="#schemaimport-in-die-datenbank"><span class="header-section-number">1.1</span> Schemaimport in die Datenbank</a></li>
+  <li><a href="#import-in-die-datenbank" id="toc-import-in-die-datenbank" class="nav-link" data-scroll-target="#import-in-die-datenbank"><span class="header-section-number">1.2</span> Import in die Datenbank</a></li>
+  <li><a href="#export-aus-der-datenbank" id="toc-export-aus-der-datenbank" class="nav-link" data-scroll-target="#export-aus-der-datenbank"><span class="header-section-number">1.3</span> Export aus der Datenbank</a></li>
+  <li><a href="#log-meldungen" id="toc-log-meldungen" class="nav-link" data-scroll-target="#log-meldungen"><span class="header-section-number">1.4</span> Log-Meldungen</a></li>
+  <li><a href="#fehlerhafte-daten" id="toc-fehlerhafte-daten" class="nav-link" data-scroll-target="#fehlerhafte-daten"><span class="header-section-number">1.5</span> Fehlerhafte Daten</a></li>
+  <li><a href="#laufzeitanforderungen" id="toc-laufzeitanforderungen" class="nav-link" data-scroll-target="#laufzeitanforderungen"><span class="header-section-number">1.6</span> Laufzeitanforderungen</a></li>
+  <li><a href="#lizenz" id="toc-lizenz" class="nav-link" data-scroll-target="#lizenz"><span class="header-section-number">1.7</span> Lizenz</a></li>
+  </ul></li>
+  <li><a href="#sec-funktionsweise" id="toc-sec-funktionsweise" class="nav-link" data-scroll-target="#sec-funktionsweise"><span class="header-section-number">2</span> Funktionsweise</a>
+  <ul class="collapse">
+  <li><a href="#schemaimport-funktionen" id="toc-schemaimport-funktionen" class="nav-link" data-scroll-target="#schemaimport-funktionen"><span class="header-section-number">2.1</span> Schemaimport-Funktionen</a></li>
+  <li><a href="#export-funktionen" id="toc-export-funktionen" class="nav-link" data-scroll-target="#export-funktionen"><span class="header-section-number">2.2</span> Export-Funktionen</a></li>
+  <li><a href="#prüf-funktionen" id="toc-prüf-funktionen" class="nav-link" data-scroll-target="#prüf-funktionen"><span class="header-section-number">2.3</span> Prüf-Funktionen</a></li>
+  <li><a href="#migration-von-3.x-nach-4.x" id="toc-migration-von-3.x-nach-4.x" class="nav-link" data-scroll-target="#migration-von-3.x-nach-4.x"><span class="header-section-number">2.4</span> Migration von 3.x nach 4.x</a></li>
+  </ul></li>
+  <li><a href="#sec-referenz" id="toc-sec-referenz" class="nav-link" data-scroll-target="#sec-referenz"><span class="header-section-number">3</span> Referenz</a>
+  <ul class="collapse">
+  <li><a href="#aufruf-syntax" id="toc-aufruf-syntax" class="nav-link" data-scroll-target="#aufruf-syntax"><span class="header-section-number">3.1</span> Aufruf-Syntax</a></li>
+  <li><a href="#optionen" id="toc-optionen" class="nav-link" data-scroll-target="#optionen"><span class="header-section-number">3.2</span> Optionen</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -106,8 +125,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="überblick" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="überblick"><span class="header-section-number">1</span> Überblick</h2>
+<section id="überblick" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Überblick</h1>
 <p><em>ilid2db</em> ist eine in Java erstellte Programmfamilie, die zurzeit <em>ili2pg</em>, <em>ili2fgdb</em>, <em>ili2gpkg</em>, <em>ili2ora</em>, <em>ili2mssql</em>, <em>ili2mysql</em> und <em>ili2h2gis</em> umfasst.</p>
 <p>Damit kann eine INTERLIS-Transferdatei (itf oder xtf) einem INTERLIS-Modell entsprechend (ili) mittels 1:1-Transfer in eine Datenbank (PostgreSQL/Postgis bzw. GeoPackage) gelesen werden oder aus der Datenbank mittels einem 1:1-Transfer eine solche Transferdatei erstellt werden. Folgende Funktionen sind möglich:</p>
 <ul>
@@ -121,16 +140,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>INTERLIS 2</li>
 <li>GML 3.2<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 </ul>
-<section id="schemaimport-in-die-datenbank" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="schemaimport-in-die-datenbank"><span class="header-section-number">1.1</span> Schemaimport in die Datenbank</h3>
+<section id="schemaimport-in-die-datenbank" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="schemaimport-in-die-datenbank"><span class="header-section-number">1.1</span> Schemaimport in die Datenbank</h2>
 <p>Beim Schemaimport (<code>--schemaimport</code>) wird anhand des INTERLIS-Modells das Datenbankschema angelegt.</p>
 <p>Diverse Optionen beeinflussen die Abbildung.</p>
 <p>Den Geometrien kann mittels Parameter ein EPSG-Code zugewiesen werden. Die Geometrie-Attribute können optional indexiert werden.</p>
 <p>Beispiel:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> ili2gpkg.jar <span class="at">--schemaimport</span> <span class="at">--dbfile</span> mogis.gpkg path/to/dm01av.ili</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="import-in-die-datenbank" class="level3" data-number="1.2">
-<h3 data-number="1.2" class="anchored" data-anchor-id="import-in-die-datenbank"><span class="header-section-number">1.2</span> Import in die Datenbank</h3>
+<section id="import-in-die-datenbank" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="import-in-die-datenbank"><span class="header-section-number">1.2</span> Import in die Datenbank</h2>
 <p>Der Import (<code>--import</code>) schreibt alle Objekte (im Sinne der eigentlichen Daten) der Transferdatei in die Datenbank.</p>
 <p>Diverse Optionen beeinflussen, was mit den bestehenden Daten in der DB geschieht.</p>
 <p>AREA- und SURFACE-Geometrien werden bei INTERLIS 1 polygoniert.</p>
@@ -138,8 +157,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Beispiel:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> ili2gpkg.jar <span class="at">--import</span> <span class="at">--dbfile</span> mogis.gpkg path/to/data.xtf</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="export-aus-der-datenbank" class="level3" data-number="1.3">
-<h3 data-number="1.3" class="anchored" data-anchor-id="export-aus-der-datenbank"><span class="header-section-number">1.3</span> Export aus der Datenbank</h3>
+<section id="export-aus-der-datenbank" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="export-aus-der-datenbank"><span class="header-section-number">1.3</span> Export aus der Datenbank</h2>
 <p>Der Export (<code>--export</code>) schreibt alle Daten aus der Datenbank in eine Transferdatei.</p>
 <p>Mit weiteren Optionen wird gesteuert, welche Daten aus der Datenbank exportiert werden.</p>
 <p>Genau einer der Parameter <code>--models</code>, <code>--topics</code>, <code>--baskets</code> oder <code>--dataset</code> muss zwingend verwendet werden, um die zu exportierenden DB-Records auszuwählen.</p>
@@ -148,8 +167,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Beispiel:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> ili2gpkg.jar <span class="at">--export</span> <span class="at">--models</span> DM01 <span class="at">--dbfile</span> mogis.gpkg path/to/output.xtf</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="log-meldungen" class="level3" data-number="1.4">
-<h3 data-number="1.4" class="anchored" data-anchor-id="log-meldungen"><span class="header-section-number">1.4</span> Log-Meldungen</h3>
+<section id="log-meldungen" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="log-meldungen"><span class="header-section-number">1.4</span> Log-Meldungen</h2>
 <p>Die Log-Meldungen sollen dem Benutzer zeigen, was das Programm macht. Am Anfang erscheinen Angaben zur Programm-Version. Falls das Programm ohne Fehler durchläuft, wird das am Ende ausgegeben.:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Info:</span> ili2fgdb-3.10.7-20170823</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span>
@@ -165,8 +184,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Error:</span> ...import failed</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="fehlerhafte-daten" class="level3" data-number="1.5">
-<h3 data-number="1.5" class="anchored" data-anchor-id="fehlerhafte-daten"><span class="header-section-number">1.5</span> Fehlerhafte Daten</h3>
+<section id="fehlerhafte-daten" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="fehlerhafte-daten"><span class="header-section-number">1.5</span> Fehlerhafte Daten</h2>
 <p>Um fehlerhaften Daten zu importieren (um sie danach (z.B. im GIS) zu flicken), muss mindestens die Validierung ausgeschaltet werden (<code>--disableValidation</code>). Das DB-Schema muss aber auch so angelegt werden, dass fehlerhafte Werte als Text importiert werden können (<code>--sqlColsAsText</code>) bzw. durch <code>NULL</code> ersetzt werden können (<code>--sqlEnableNull</code>). Und die Programmlogik für den Datenimport muss die Fehler tolerieren (<code>--skipReferenceErrors</code> und <code>--skipGeometryErrors</code>), so dass z.B. eine Referenz auf ein nicht vorhandenes Objekt ignoriert wird.</p>
 <p>Um solche Daten zu importieren (um sie danach zu flicken):</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> ili2gpkg.jar <span class="at">--schemaimport</span> <span class="at">--sqlEnableNull</span> <span class="at">--sqlColsAsText</span> <span class="dt">\</span></span>
@@ -186,8 +205,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> ili2gpkg.jar <span class="at">--import</span> <span class="at">--skipReferenceErrors</span> <span class="at">--skipPolygonBuilding</span> <span class="dt">\</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>--skipGeometryErrors <span class="at">--disableValidation</span> <span class="at">--dbfile</span> mogis.gpkg path/to/data.xtf</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="laufzeitanforderungen" class="level3" data-number="1.6">
-<h3 data-number="1.6" class="anchored" data-anchor-id="laufzeitanforderungen"><span class="header-section-number">1.6</span> Laufzeitanforderungen</h3>
+<section id="laufzeitanforderungen" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="laufzeitanforderungen"><span class="header-section-number">1.6</span> Laufzeitanforderungen</h2>
 <p>Das Programm setzt Java 1.8 voraus.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">PostGIS</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">FileGDB</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">GeoPackage</a></li></ul>
@@ -204,18 +223,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="lizenz" class="level3" data-number="1.7">
-<h3 data-number="1.7" class="anchored" data-anchor-id="lizenz"><span class="header-section-number">1.7</span> Lizenz</h3>
+<section id="lizenz" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="lizenz"><span class="header-section-number">1.7</span> Lizenz</h2>
 <p>GNU Lesser General Public License</p>
 </section>
 </section>
-<section id="sec-funktionsweise" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="sec-funktionsweise"><span class="header-section-number">2</span> Funktionsweise</h2>
+<section id="sec-funktionsweise" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Funktionsweise</h1>
 <p>In den folgenden Abschnitten wird die Funktionsweise anhand einzelner Anwendungsfälle beispielhaft beschrieben. Die detaillierte Beschreibung einzelner Funktionen ist in <a href="#sec-referenz" class="quarto-xref">Kapitel&nbsp;3</a> zu finden.</p>
-<section id="schemaimport-funktionen" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="schemaimport-funktionen"><span class="header-section-number">2.1</span> Schemaimport-Funktionen</h3>
-<section id="fall-1.1" class="level4" data-number="2.1.1">
-<h4 data-number="2.1.1" class="anchored" data-anchor-id="fall-1.1"><span class="header-section-number">2.1.1</span> Fall 1.1</h4>
+<section id="schemaimport-funktionen" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="schemaimport-funktionen"><span class="header-section-number">2.1</span> Schemaimport-Funktionen</h2>
+<section id="fall-1.1" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="fall-1.1"><span class="header-section-number">2.1.1</span> Fall 1.1</h3>
 <p>Die Tabellen existieren nicht und sollen in der Datenbank angelegt werden (<code>--schemaimport</code>).</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">PostGIS</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">GeoPackage</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href="">FileGDB</a></li></ul>
@@ -240,25 +259,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Es werden keine Daten importiert, sondern nur die leeren Tabellen angelegt.</p>
 </section>
 </section>
-<section id="export-funktionen" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="export-funktionen"><span class="header-section-number">2.2</span> Export-Funktionen</h3>
+<section id="export-funktionen" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="export-funktionen"><span class="header-section-number">2.2</span> Export-Funktionen</h2>
 <p>lorem ipsum</p>
 </section>
-<section id="prüf-funktionen" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="prüf-funktionen"><span class="header-section-number">2.3</span> Prüf-Funktionen</h3>
+<section id="prüf-funktionen" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="prüf-funktionen"><span class="header-section-number">2.3</span> Prüf-Funktionen</h2>
 <p>lorem ipsum</p>
 </section>
-<section id="migration-von-3.x-nach-4.x" class="level3" data-number="2.4">
-<h3 data-number="2.4" class="anchored" data-anchor-id="migration-von-3.x-nach-4.x"><span class="header-section-number">2.4</span> Migration von 3.x nach 4.x</h3>
+<section id="migration-von-3.x-nach-4.x" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="migration-von-3.x-nach-4.x"><span class="header-section-number">2.4</span> Migration von 3.x nach 4.x</h2>
 <p>lorem ipsum</p>
 </section>
 </section>
-<section id="sec-referenz" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="sec-referenz"><span class="header-section-number">3</span> Referenz</h2>
+<section id="sec-referenz" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Referenz</h1>
 <p>In den folgenden Abschnitten werden einzelne Aspekte detailliert, aber isoliert, beschrieben. Die Funktionsweise als Ganzes wird anhand einzelner Anwendungsfälle beispielhaft in <a href="#sec-funktionsweise" class="quarto-xref">Kapitel&nbsp;2</a> (weiter oben) beschrieben.</p>
 <p>Die Dokumentation gilt grundsätzlich für alle ili2db-Varianten, ausser es gibt einen spezifischen Hinweis auf PostGIS, GeoPackage oder FileGDB.</p>
-<section id="aufruf-syntax" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="aufruf-syntax"><span class="header-section-number">3.1</span> Aufruf-Syntax</h3>
+<section id="aufruf-syntax" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="aufruf-syntax"><span class="header-section-number">3.1</span> Aufruf-Syntax</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">PostGIS</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">GeoPackage</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false" href="">FileGDB</a></li></ul>
 <div class="tab-content">
@@ -309,17 +328,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="optionen" class="level3" data-number="3.2">
-<h3 data-number="3.2" class="anchored" data-anchor-id="optionen"><span class="header-section-number">3.2</span> Optionen</h3>
-<section id="import" class="level4" data-number="3.2.1">
-<h4 data-number="3.2.1" class="anchored" data-anchor-id="import"><span class="header-section-number">3.2.1</span> <code>--import</code></h4>
+<section id="optionen" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="optionen"><span class="header-section-number">3.2</span> Optionen</h2>
+<section id="import" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="import"><span class="header-section-number">3.2.1</span> <code>--import</code></h3>
 <p>Importiert Daten aus einer Transferdatei in die Datenbank.</p>
 <p>Die Tabellen werden implizit auch angelegt, falls sie noch nicht vorhanden sind (siehe Kapitel Abbildungsregeln). Falls die Tabellen in der Datenbank schon vorhanden sind, können sie zusätzliche Spalten enthalten (z.B. bfsnr, datum etc.), welche beim Import leer bleiben.</p>
 <p>Falls beim Import ein Datensatz-Identifikator (–dataset) definiert wird, darf dieser Datensatz-Identifikator in der Datenbank noch nicht vorhanden sein. Um die bestehenden Daten zu ersetzen, kann die Option –replace verwendet werden.</p>
 <p>TODO: Die Tabellen sind schon vorhanden (und entsprechen (nicht) der ili-Klasse).</p>
 </section>
-<section id="update" class="level4" data-number="3.2.2">
-<h4 data-number="3.2.2" class="anchored" data-anchor-id="update"><span class="header-section-number">3.2.2</span> <code>--update</code></h4>
+<section id="update" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="update"><span class="header-section-number">3.2.2</span> <code>--update</code></h3>
 <p>Aktualisiert die Daten in der Datenbank anhand einer Transferdatei, d.h. neue Objekte werden eingefügt, bestehende Objekte werden aktualisiert und in der Transferdatei nicht mehr vorhandene Objekte werden gelöscht. Diese Funktion bedingt, dass das Datenbankschema mit der Option <code>--createBasketCol</code> erstellt wurde, und dass die Klassen und Topics eine stabile OID haben.</p>
 <p>lorem ipsum</p>
 </section>
