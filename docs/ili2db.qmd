@@ -2,9 +2,11 @@
 title: "Anleitung zur Programmfamilie ili2db"
 #author: Norah Jones
 #date: 'May 22, 2021'
+lang: de
 toc: true
 toc-depth: 2
 number-sections: true
+number-depth: 4
 format:
   html:
     theme:
@@ -14,9 +16,13 @@ format:
     fontcolor: rgb(20, 24, 24)
     fontsize: 16px
     linestretch: 1.6
+    grid:
+      sidebar-width: 300px
+      margin-width: 300px
+      body-width: 900px
     
-    header-includes: |
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    # header-includes: |
+    #   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
 #  docx: default
 ---
@@ -232,12 +238,100 @@ Falls die Datei mogis.gdb noch nicht existiert, wird sie erzeugt. Falls die Date
 
 Es werden keine Daten importiert, sondern nur die leeren Tabellen angelegt.
 
+### Export-Funktionen
+
+lorem ipsum
+
+### Prüf-Funktionen
+
+lorem ipsum
+
+### Migration von 3.x nach 4.x
+
+lorem ipsum
+
 
 ## Referenz {#sec-referenz}
 
 In den folgenden Abschnitten werden einzelne Aspekte detailliert, aber isoliert, beschrieben. Die Funktionsweise als Ganzes wird anhand einzelner Anwendungsfälle beispielhaft in @sec-funktionsweise (weiter oben) beschrieben.
 
 Die Dokumentation gilt grundsätzlich für alle ili2db-Varianten, ausser es gibt einen spezifischen Hinweis auf PostGIS, GeoPackage oder FileGDB.
+
+### Aufruf-Syntax
+
+::: {.panel-tabset}
+## PostGIS
+
+```bash
+java -jar ili2pg.jar [Options] [file]
+```
+
+## GeoPackage
+
+```bash
+java -jar ili2fgdb.jar [Options] [file]
+```
+
+## FileGDB
+
+```bash
+java -jar ili2fgdb.jar [Options] [file]
+```
+:::
+
+Der Rückgabewert ist wie folgt:
+
+- 0 Import/Export ok, keine Fehler festgestellt
+- !0 Import/Export nicht ok, Fehler festgestellt
+
+Optionen:
+
++-------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Option                        | Beschreibung                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
++===============================+============================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================+
+| `--import`                    | Importiert Daten aus einer Transferdatei in die Datenbank.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|                               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                               | Die Tabellen werden implizit auch angelegt, falls sie noch nicht vorhanden sind (siehe Kapitel Abbildungsregeln). Falls die Tabellen in der Datenbank schon vorhanden sind, können sie zusätzliche Spalten enthalten (z.B. bfsnr, datum etc.), welche beim Import leer bleiben.                                                                                                                                                                                                                                                            |
+|                               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                               | Falls beim Import ein Datensatz-Identifikator (--dataset) definiert wird, darf dieser Datensatz-Identifikator in der Datenbank noch nicht vorhanden sein. Um die bestehenden Daten zu ersetzen, kann die Option --replace verwendet werden.                                                                                                                                                                                                                                                                                                |
+|                               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                               | TODO: Die Tabellen sind schon vorhanden (und entsprechen (nicht) der ili-Klasse).                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
++-------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| `--import`                    | Importiert Daten aus einer Transferdatei in die Datenbank.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|                               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                               | Die Tabellen werden implizit auch angelegt, falls sie noch nicht vorhanden sind (siehe Kapitel Abbildungsregeln). Falls die Tabellen in der Datenbank schon vorhanden sind, können sie zusätzliche Spalten enthalten (z.B. bfsnr, datum etc.), welche beim Import leer bleiben.                                                                                                                                                                                                                                                            |
+|                               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                               | Falls beim Import ein Datensatz-Identifikator (--dataset) definiert wird, darf dieser Datensatz-Identifikator in der Datenbank noch nicht vorhanden sein. Um die bestehenden Daten zu ersetzen, kann die Option --replace verwendet werden.                                                                                                                                                                                                                                                                                                |
+|                               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                               | TODO: Die Tabellen sind schon vorhanden (und entsprechen (nicht) der ili-Klasse).                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
++-------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+: Optionen {tbl-colwidths="[25,75]"}
+
+### Optionen
+
+#### `--import`
+
+Importiert Daten aus einer Transferdatei in die Datenbank.
+
+Die Tabellen werden implizit auch angelegt, falls sie noch nicht vorhanden sind (siehe Kapitel Abbildungsregeln). Falls die Tabellen in der Datenbank schon vorhanden sind, können sie zusätzliche Spalten enthalten (z.B. bfsnr, datum etc.), welche beim Import leer bleiben.
+
+Falls beim Import ein Datensatz-Identifikator (--dataset) definiert wird, darf dieser Datensatz-Identifikator in der Datenbank noch nicht vorhanden sein. Um die bestehenden Daten zu ersetzen, kann die Option --replace verwendet werden.
+
+TODO: Die Tabellen sind schon vorhanden (und entsprechen (nicht) der ili-Klasse).
+
+#### `--update`
+
+Aktualisiert die Daten in der Datenbank anhand einer Transferdatei, d.h. neue Objekte werden eingefügt, bestehende Objekte werden aktualisiert und in der Transferdatei nicht mehr vorhandene Objekte werden gelöscht. Diese Funktion bedingt, dass das Datenbankschema mit der Option `--createBasketCol` erstellt wurde, und dass die Klassen und Topics eine stabile OID haben.
+
+
+
+
+
+lorem ipsum
+
+
+
 
 
 [^1]: GML 3.2; die verwendeten Kodierungsregeln entsprechen [eCH-0118-1.0](https://ech.ch/de/ech/ech-0118/1.0)
