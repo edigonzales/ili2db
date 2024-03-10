@@ -326,8 +326,6 @@ Aktualisiert die Daten in der Datenbank anhand einer Transferdatei, d.h. neue Ob
 
 
 
-
-
 lorem ipsum
 
 
