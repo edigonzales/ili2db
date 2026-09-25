@@ -82,5 +82,5 @@ jobs:
           sha256sum -c SHA256SUMS
           gh release create "$RELEASE_TAG" --target "$SOURCE_SHA" --prerelease \
             --title "IBX preview $RELEASE_TAG" \
-            --notes "INTERLIS 2.3/2.4 FULL IBX export for ili2pg and ili2gpkg. Java 21. Binary distributions, sources and exact dependency provenance included." \
+            --notes "Breaking change: IBX format 5 only; recreate format 4 files from source. Compact binary spatial indexes. INTERLIS 2.3/2.4 FULL IBX export for ili2pg and ili2gpkg. Java 21. Binary distributions, sources and exact dependency provenance included." \
             ./*.zip SHA256SUMS provenance.json

@@ -31,12 +31,12 @@ with tempfile.TemporaryDirectory(prefix='ibx-bindist-') as directory:
         subprocess.run(command + ['--import', '--doSchemaImport', '--createTidCol', '--importTid'] + connection + model +
                        [str(ROOT / 'test/data/Simple/SimpleCoord23a.xtf')], cwd=work, check=True)
         target = work / (variant + '.ibx')
-        subprocess.run(command + ['--export', '--exportTid'] + connection + model + [str(target)],
+        subprocess.run(command + ['--export', '--exportTid', '--ibxGeometryEncoding', 'wkb', '--ibxGeometryCrs', 'SimpleCoord23.TestA.ClassA1.attr2=EPSG:2056', '--ibxSpatial', 'SimpleCoord23.TestA.ClassA1:attr2', '--ibxCrs', 'EPSG:2056'] + connection + model + [str(target)],
                        cwd=work, check=True)
         data = target.read_bytes()
-        assert data[:8] == b'IBXCONT1' and struct.unpack('>I', data[8:12])[0] == 4
+        assert data[:8] == b'IBXCONT1' and struct.unpack('>I', data[8:12])[0] == 5
         assert data[-64:-56] == b'IBXFOOT1'
-        result = subprocess.run(command + ['--export', '--exportTid'] + connection + model + [str(target)],
+        result = subprocess.run(command + ['--export', '--exportTid', '--ibxGeometryEncoding', 'wkb', '--ibxGeometryCrs', 'SimpleCoord23.TestA.ClassA1.attr2=EPSG:2056', '--ibxSpatial', 'SimpleCoord23.TestA.ClassA1:attr2', '--ibxCrs', 'EPSG:2056'] + connection + model + [str(target)],
                                 cwd=work, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         assert result.returncode != 0, 'An existing IBX file must require --ibxOverwrite'
         assert target.read_bytes() == data

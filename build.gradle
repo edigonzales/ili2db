@@ -362,7 +362,7 @@ configurations {
     ftpAntTask
 }
 dependencies {
-    implementation 'ch.interlis:iox-ibx:0.1.0-SNAPSHOT'
+    implementation 'ch.interlis:iox-ibx:0.2.0-SNAPSHOT'
     implementation group: 'ch.interlis', name: 'iox-ili', version: '1.24.4'
     implementation group: 'ch.interlis', name: 'ili2c-tool', version: "5.6.8"
     implementation group: 'ch.interlis', name: 'ili2c-core', version: "5.6.8"
@@ -782,7 +782,7 @@ task uploadDoc(){  // dependsOn: [usrdoc,ilidoc]) {
 // Release only the pg and gpkg variants. Resolve the source artifact from the
 // same snapshot module and verify its source commit against the runtime JAR.
 configurations { ibxSources { transitive = false } }
-dependencies { ibxSources 'ch.interlis:iox-ibx:0.1.0-SNAPSHOT:sources' }
+dependencies { ibxSources 'ch.interlis:iox-ibx:0.2.0-SNAPSHOT:sources' }
 def releaseMetadata = layout.buildDirectory.file('ibx-release/provenance.json')
 tasks.register('ibxProvenance') {
     outputs.file(releaseMetadata)

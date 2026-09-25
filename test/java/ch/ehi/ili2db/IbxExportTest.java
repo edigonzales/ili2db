@@ -44,8 +44,9 @@ public abstract class IbxExportTest {
             + "DOMAIN Coord = COORD 0.000 .. 3000000.000, 0.000 .. 3000000.000;\n"
             + "TOPIC Data =\n"
             + "STRUCTURE Detail = label : TEXT*50; END Detail;\n"
-            + "CLASS Item = name : TEXT*50; amount : 0.00000 .. 100.00000; point : Coord; details :"
-            + " LIST {0..*} OF Detail; END Item;\n"
+            + "CLASS Item = name : TEXT*50; amount : 0.00000 .. 100.00000; point : Coord; area :"
+            + " SURFACE WITH (STRAIGHTS) VERTEX Coord WITHOUT OVERLAPS > 0.001; details : LIST"
+            + " {0..*} OF Detail; END Item;\n"
             + "ASSOCIATION Link = a -- {0..*} Item; b -- {0..*} Item; END Link;\n"
             + "END Data; END IbxTest.\n";
     Files.write(ili, model.getBytes("UTF-8"));
@@ -67,6 +68,18 @@ public abstract class IbxExportTest {
         IomObject point = object.addattrobj("point", "COORD");
         point.setattrvalue("C1", "260000" + i + ".000");
         point.setattrvalue("C2", "1200000.000");
+        IomObject segments =
+            object
+                .addattrobj("area", "MULTISURFACE")
+                .addattrobj("surface", "SURFACE")
+                .addattrobj("boundary", "BOUNDARY")
+                .addattrobj("polyline", "POLYLINE")
+                .addattrobj("sequence", "SEGMENTS");
+        for (int[] xy : new int[][] {{0, 0}, {10, 0}, {10, 10}, {0, 10}, {0, 0}}) {
+          IomObject vertex = segments.addattrobj("segment", "COORD");
+          vertex.setattrvalue("C1", Integer.toString(2600000 + xy[0]));
+          vertex.setattrvalue("C2", Integer.toString(1200000 + xy[1]));
+        }
         object.addattrobj("details", "IbxTest.Data.Detail").setattrvalue("label", "first");
         object.addattrobj("details", "IbxTest.Data.Detail").setattrvalue("label", "second");
         writer.write(new ch.interlis.iox_j.ObjectEvent(object));
@@ -107,7 +120,22 @@ public abstract class IbxExportTest {
       try (Fragment objects = c.getClass("IbxTest.Data.Item")) {
         assertEquals(2, objects.objects().count());
       }
-      assertEquals(1, ch.interlis.ibx.spatial.SpatialIndex.manifest(c).indexes.size());
+      assertEquals(5, c.metadata().formatVersion());
+      assertEquals(2, ch.interlis.ibx.spatial.SpatialIndex.manifest(c).indexes.size());
+      for (String attribute : new String[] {"point", "area"}) {
+        ch.interlis.ibx.spatial.SpatialIndex.Info index =
+            ch.interlis.ibx.spatial.SpatialIndex.manifest(c)
+                .indexes
+                .get("IbxTest.Data.Item\0" + attribute);
+        assertEquals(attribute.equals("point") ? 2 : 1, index.leafLayout);
+        try (Fragment hits =
+            c.querySpatialCandidates(
+                "IbxTest.Data.Item",
+                attribute,
+                new BoundingBox(2600000, 1200000, 2600010, 1200010))) {
+          assertEquals(2, hits.objects().count());
+        }
+      }
     } finally {
       expected.close();
     }
@@ -128,6 +156,10 @@ public abstract class IbxExportTest {
         "wkb",
         "--ibxGeometryCrs",
         "IbxTest.Data.Item.point=EPSG:2056",
+        "--ibxGeometryCrs",
+        "IbxTest.Data.Item.area=EPSG:2056",
+        "--ibxSpatial",
+        "IbxTest.Data.Item:area",
         "--ibxSpatial",
         "IbxTest.Data.Item:point",
         "--ibxSpatialOrder",
