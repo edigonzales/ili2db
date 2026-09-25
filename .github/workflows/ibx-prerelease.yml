@@ -1,0 +1,86 @@
+name: IBX pg and gpkg prerelease
+on:
+  push:
+    branches: [codex/ibx-export]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ibx-release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    services:
+      postgis:
+        image: postgis/postgis:16-3.5
+        env:
+          POSTGRES_PASSWORD: ibx_test
+          POSTGRES_DB: ibx_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres -d ibx_test"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: gradle/actions/setup-gradle@v4
+      - run: python -m pip install docutils==0.22.2
+      - name: Test both database exports and regressions
+        run: >-
+          ./gradlew test --tests '*IbxOptionsTest'
+          ili2gpkgTest --tests '*IbxExportGpkgTest' --tests '*SimpleGpkgTest'
+          ili2pgTest --tests '*IbxExportPgTest' --tests '*SimplePgTest'
+          -Ddburl=jdbc:postgresql://localhost:5432/ibx_test -Ddbusr=postgres -Ddbpwd=ibx_test
+          --refresh-dependencies --no-daemon
+      - name: Build binary and source distributions
+        run: ./gradlew ibxReleaseChecksums -PibxVersion=5.5.3-ibx.${{ github.run_number }}.${{ github.run_attempt }} --no-daemon
+      - name: Smoke-test unpacked distributions
+        env:
+          IBX_PG_PORT: '5432'
+        run: python scripts/smoke-bindists.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ibx-release
+          path: |
+            dist/ili2pg-*.zip
+            dist/ili2gpkg-*.zip
+            dist/ili2db-ibx-*-sources.zip
+            dist/SHA256SUMS
+            dist/provenance.json
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-reports
+          path: build/reports/tests
+  release:
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/codex/ibx-export'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: ibx-release
+          path: dist
+      - name: Publish prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.sha }}
+          RELEASE_TAG: ibx-${{ github.run_number }}-${{ github.run_attempt }}
+        run: |
+          cd dist
+          sha256sum -c SHA256SUMS
+          gh release create "$RELEASE_TAG" --target "$SOURCE_SHA" --prerelease \
+            --title "IBX preview $RELEASE_TAG" \
+            --notes "INTERLIS 2.3/2.4 FULL IBX export for ili2pg and ili2gpkg. Java 21. Binary distributions, sources and exact dependency provenance included." \
+            ./*.zip SHA256SUMS provenance.json

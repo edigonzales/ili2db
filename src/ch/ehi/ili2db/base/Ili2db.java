@@ -245,6 +245,7 @@ public class Ili2db {
 	public static void run(Config config,String appHome)
 	throws Ili2dbException
 	{
+        ch.ehi.ili2db.ibx.IbxExport.validate(config);
 		if(config.getFunction()==Config.FC_IMPORT){
 			runUpdate(config,appHome,Config.FC_IMPORT);
         }else if(config.getFunction()==Config.FC_VALIDATE){
@@ -3424,7 +3425,9 @@ public class Ili2db {
 	        java.io.File outfile=new java.io.File(xtffile);
 	        IoxWriter ioxWriter=null;
 	        try{
-	            if(Config.ILIGML20.equals(config.getTransferFileFormat())){
+	            if(ch.ehi.ili2db.ibx.IbxExport.isIbx(config)) {
+                    ioxWriter=ch.ehi.ili2db.ibx.IbxExport.writer(outfile,td,config,buildModelList(td,config,conn));
+                }else if(Config.ILIGML20.equals(config.getTransferFileFormat())){
 	                ioxWriter=new Iligml20Writer(outfile,td);
 	            }else{
 	                String ext=ch.ehi.basics.view.GenericFileFilter.getFileExtension(xtffile).toLowerCase();
@@ -3449,16 +3452,17 @@ public class Ili2db {
 	            trsfr.doit(function,outfile.getName(),ioxWriter,sender,exportParamModelnames,basketSqlIds,stat,customMapping);
 	            //trsfr.doitJava();
 	            ioxWriter.flush();
+                if(ch.ehi.ili2db.ibx.IbxExport.isIbx(config)) ch.ehi.ili2db.ibx.IbxExport.addIndexes(outfile,config);
 	        }catch(ch.interlis.iox.IoxException ex){
-	            EhiLogger.logError("failed to write xml output",ex);
+	            EhiLogger.logError("failed to write transfer output",ex);
 	        } catch (Ili2dbException ex) {
-                EhiLogger.logError("failed to write xml output",ex);
+                EhiLogger.logError("failed to write transfer output",ex);
             }finally{
 	            if(ioxWriter!=null){
 	                try{
 	                    ioxWriter.close();
 	                }catch(ch.interlis.iox.IoxException ex){
-	                    EhiLogger.logError("failed to close xml output",ex);
+	                    EhiLogger.logError("failed to close transfer output",ex);
 	                }
 	            }
 	            ioxWriter=null;

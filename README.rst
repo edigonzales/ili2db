@@ -1,3 +1,9 @@
+IBX export preview
+==================
+
+This branch adds direct IBX export for ili2pg and ili2gpkg (Java 21).
+See `IBX documentation <docs/IBX.md>`_ for options, builds and prereleases.
+
 ============================================================
 ili2db - imports/exports interlis transfer files to a sql db
 ============================================================

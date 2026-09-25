@@ -84,7 +84,9 @@ public abstract class AbstractMain {
 					break;
 				}
 				String arg = args[argi];
-				if (arg.equals("--modeldir")) {
+				if (arg.startsWith("--ibx")) {
+                    argi=ch.ehi.ili2db.ibx.IbxExport.parse(args,argi,config);
+                } else if (arg.equals("--modeldir")) {
 					argi++;
 					config.setModeldir(args[argi]);
 					argi++;
@@ -518,6 +520,7 @@ public abstract class AbstractMain {
 					System.err.println("--replace              do a replace.");
 					System.err.println("--delete               do a delete.");
 					System.err.println("--export               do an export.");
+                    ch.ehi.ili2db.ibx.IbxExport.printHelp();
                     System.err.println("--validate             validates the data in the db (without export).");
 					System.err.println("--schemaimport         do a schema import.");
 					System.err.println("--exportMetaConfig     exports a Meta-Config file of an existing db.");
@@ -656,6 +659,7 @@ public abstract class AbstractMain {
 			Ili2db.writeAppSettings(settings);
 		}else{
 			try {
+                ch.ehi.ili2db.ibx.IbxExport.validate(config);
 	            if(config.getFunction()!=Config.FC_SCRIPT) {
 	                final String dbUrl = getDbUrlConverter().makeUrl(config);
 	                config.setDburl(dbUrl);
